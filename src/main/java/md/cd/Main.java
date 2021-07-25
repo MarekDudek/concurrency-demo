@@ -11,6 +11,6 @@ public final class Main
     {
         log.info("Concurrency Demo");
         new HelloApp().main();
-        new SleepingApp().main();
+        new SleepingApp().main(5, 100);
     }
 }
