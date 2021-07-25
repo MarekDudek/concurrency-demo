@@ -13,6 +13,6 @@ public final class Main
         log.info("Concurrency Demo");
         new HelloApp().main();
         new SleepingApp().main(5, 100);
-        new InterruptsApp().main(10_000, 1_000, 5_000);
+        new InterruptsApp().main(10_000, 1_000, 4_000, 2_000);
     }
 }

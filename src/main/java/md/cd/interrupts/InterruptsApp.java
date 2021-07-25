@@ -5,31 +5,34 @@ import md.cd.utils.Factorial;
 
 import java.math.BigDecimal;
 
-import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 
 @Slf4j
 public final class InterruptsApp
 {
     public static void main(String[] args) throws InterruptedException
     {
-        final int sleep = parseInt(args[0]);
-        final int wait = parseInt(args[1]);
-        final int allow = parseInt(args[2]);
-        new InterruptsApp().main(sleep, wait, allow);
+        final long sleep = parseLong(args[0]);
+        final long wait = parseLong(args[1]);
+        final long allow = parseLong(args[2]);
+        final long spin = parseLong(args[3]);
+        new InterruptsApp().main(sleep, wait, allow, spin);
     }
 
     public void main
             (
-                    int sleep,
-                    int wait,
-                    int allow
+                    long sleep,
+                    long wait,
+                    long allow,
+                    long spin
             ) throws InterruptedException
     {
         sleeper(sleep, wait);
         worker(allow);
+        spinner(spin);
     }
 
-    private void sleeper(int sleep, int wait) throws InterruptedException
+    private void sleeper(long sleep, long wait) throws InterruptedException
     {
         final Thread t = new Thread(
                 () -> {
@@ -51,7 +54,7 @@ public final class InterruptsApp
         log.info("{} interrupted: {}", t.getName(), t.isInterrupted());
     }
 
-    private void worker(int allow) throws InterruptedException
+    private void worker(long allow) throws InterruptedException
     {
         final Thread t = new Thread(
                 () -> {
@@ -63,6 +66,7 @@ public final class InterruptsApp
                         if (Thread.interrupted())
                         {
                             log.info("We've been requested to interrupt");
+                            Thread.currentThread().interrupt();
                             return;
                         }
                     }
@@ -71,6 +75,24 @@ public final class InterruptsApp
         t.start();
         Thread.sleep(allow);
         t.interrupt();
-        log.info("{} interrupted: {}", t.getName(), t.isInterrupted());
+        log.info("{} interrupted: {}, alive: {}", t.getName(), t.isInterrupted(), t.isAlive());
+    }
+
+    private void spinner(long spin) throws InterruptedException
+    {
+        final Thread t = new Thread(
+                () -> {
+                    log.info("Spinning");
+                    while (true)
+                        if (Thread.interrupted())
+                            return;
+                },
+                "spinner"
+        );
+        t.start();
+        Thread.sleep(spin);
+        log.info("Interrupting");
+        while (t.isAlive())
+            t.interrupt();
     }
 }
