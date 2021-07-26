@@ -4,8 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import md.cd.utils.Factorial;
 
 import java.math.BigDecimal;
+import java.time.LocalTime;
 
 import static java.lang.Long.parseLong;
+import static java.time.LocalTime.now;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Slf4j
 public final class InterruptsApp
@@ -30,6 +33,7 @@ public final class InterruptsApp
         sleeper(sleep, wait);
         worker(allow);
         spinner(spin);
+        waiting();
     }
 
     private void sleeper(long sleep, long wait) throws InterruptedException
@@ -94,5 +98,41 @@ public final class InterruptsApp
         log.info("Interrupting");
         while (t.isAlive())
             t.interrupt();
+    }
+
+    private void waiting() throws InterruptedException
+    {
+        final Thread t = new Thread(
+                () -> {
+                    log.info("- starting");
+                    for (int i = 0; i < 10; i++)
+                    {
+                        try
+                        {
+                            log.info("- sleeping");
+                            Thread.sleep(100);
+                        }
+                        catch (InterruptedException e)
+                        {
+                            log.info("! interrupted");
+                        }
+                    }
+                    log.info("- finishing");
+                },
+                "waitee"
+        );
+        t.start();
+        LocalTime started = now();
+        while (t.isAlive())
+        {
+            log.info("waiting to join");
+            t.join(100);
+            if (started.plus(1, SECONDS).isBefore(now()))
+            {
+                log.info("patience is over");
+                t.interrupt();
+                t.join();
+            }
+        }
     }
 }
