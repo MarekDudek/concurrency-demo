@@ -2,6 +2,7 @@ package md.cd;
 
 import lombok.extern.slf4j.Slf4j;
 import md.cd.hello.HelloApp;
+import md.cd.interference.CounterApp;
 import md.cd.interrupts.InterruptsApp;
 import md.cd.sleep.SleepingApp;
 
@@ -14,5 +15,6 @@ public final class Main
         new HelloApp().main();
         new SleepingApp().main(5, 100);
         new InterruptsApp().main(10_000, 1_000, 4_000, 2_000);
+        new CounterApp().main(100);
     }
 }

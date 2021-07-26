@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 import static java.lang.Long.parseLong;
 import static java.time.LocalTime.now;
-import static java.time.temporal.ChronoUnit.SECONDS;
+import static java.time.temporal.ChronoUnit.MILLIS;
 
 @Slf4j
 public final class InterruptsApp
@@ -104,20 +104,20 @@ public final class InterruptsApp
     {
         final Thread t = new Thread(
                 () -> {
-                    log.info("- starting");
+                    log.info("starting");
                     for (int i = 0; i < 10; i++)
                     {
                         try
                         {
-                            log.info("- sleeping");
+                            log.info("sleeping");
                             Thread.sleep(100);
                         }
                         catch (InterruptedException e)
                         {
-                            log.info("! interrupted");
+                            log.info("interrupted");
                         }
                     }
-                    log.info("- finishing");
+                    log.info("finishing");
                 },
                 "waitee"
         );
@@ -127,7 +127,7 @@ public final class InterruptsApp
         {
             log.info("waiting to join");
             t.join(100);
-            if (started.plus(1, SECONDS).isBefore(now()))
+            if (now().isAfter(started.plus(500, MILLIS)))
             {
                 log.info("patience is over");
                 t.interrupt();
