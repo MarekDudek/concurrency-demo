@@ -34,5 +34,7 @@ public final class SleeperApp
         Thread.sleep(wait);
         t.interrupt();
         log.info("{} interrupted: {}", t.getName(), t.isInterrupted());
+        t.join();
+        log.info("{} interrupted: {}", t.getName(), t.isInterrupted());
     }
 }

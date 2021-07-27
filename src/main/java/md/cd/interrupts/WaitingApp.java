@@ -4,48 +4,20 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalTime;
 
-import static java.lang.Long.parseLong;
 import static java.time.LocalTime.now;
 import static java.time.temporal.ChronoUnit.MILLIS;
 
 @Slf4j
-public final class InterruptsApp
+public final class WaitingApp
 {
     public static void main(String[] args) throws InterruptedException
     {
-        final long spin = parseLong(args[0]);
-        new InterruptsApp().main(spin);
+        new WaitingApp().main();
     }
 
     public void main
             (
-                    long spin
             ) throws InterruptedException
-    {
-        spinner(spin);
-        waiting();
-    }
-
-
-    private void spinner(long spin) throws InterruptedException
-    {
-        final Thread t = new Thread(
-                () -> {
-                    log.info("Spinning");
-                    while (true)
-                        if (Thread.interrupted())
-                            return;
-                },
-                "spinner"
-        );
-        t.start();
-        Thread.sleep(spin);
-        log.info("Interrupting");
-        while (t.isAlive())
-            t.interrupt();
-    }
-
-    private void waiting() throws InterruptedException
     {
         final Thread t = new Thread(
                 () -> {
