@@ -38,6 +38,7 @@ public final class WorkerApp
         t.start();
         Thread.sleep(allow);
         t.interrupt();
+        log.info("{} interrupted: {}, alive: {}", t.getName(), t.isInterrupted(), t.isAlive());
         t.join();
         log.info("{} interrupted: {}, alive: {}", t.getName(), t.isInterrupted(), t.isAlive());
     }

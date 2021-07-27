@@ -20,7 +20,7 @@ public final class Main
         new SleeperApp().main(10_000, 1_000);
         new WorkerApp().main(4_000);
         new SpinnerApp().main(2_000);
-        new WaitingApp().main();
+        new WaitingApp().main(100, 500, 10);
         new CounterApp().main(100);
     }
 }
