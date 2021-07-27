@@ -1,11 +1,12 @@
 package md.cd.interrupts;
 
 import lombok.extern.slf4j.Slf4j;
-import md.cd.utils.Factorial;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import static java.lang.Long.parseLong;
+import static java.math.BigInteger.valueOf;
+import static md.cd.utils.Factorial.factorial;
 
 @Slf4j
 public final class WorkerApp
@@ -23,8 +24,8 @@ public final class WorkerApp
                     log.info("Let's factorize!");
                     for (long n = 100_000; n < 1_000_000; n++)
                     {
-                        final BigDecimal f = Factorial.factorial(new BigDecimal(n));
-                        log.info("Factorial of {} has {} digits", n, f.toPlainString().length());
+                        final BigInteger f = factorial(valueOf(n));
+                        log.info("Factorial of {} has {} digits", n, f.toString().length());
                         if (Thread.interrupted())
                         {
                             log.info("We've been requested to interrupt");
@@ -37,6 +38,7 @@ public final class WorkerApp
         t.start();
         Thread.sleep(allow);
         t.interrupt();
+        t.join();
         log.info("{} interrupted: {}, alive: {}", t.getName(), t.isInterrupted(), t.isAlive());
     }
 }
