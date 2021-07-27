@@ -15,47 +15,20 @@ public final class InterruptsApp
 {
     public static void main(String[] args) throws InterruptedException
     {
-        final long sleep = parseLong(args[0]);
-        final long wait = parseLong(args[1]);
-        final long allow = parseLong(args[2]);
-        final long spin = parseLong(args[3]);
-        new InterruptsApp().main(sleep, wait, allow, spin);
+        final long allow = parseLong(args[0]);
+        final long spin = parseLong(args[1]);
+        new InterruptsApp().main(allow, spin);
     }
 
     public void main
             (
-                    long sleep,
-                    long wait,
                     long allow,
                     long spin
             ) throws InterruptedException
     {
-        sleeper(sleep, wait);
         worker(allow);
         spinner(spin);
         waiting();
-    }
-
-    private void sleeper(long sleep, long wait) throws InterruptedException
-    {
-        final Thread t = new Thread(
-                () -> {
-                    log.info("Started");
-                    try
-                    {
-                        Thread.sleep(sleep);
-                    }
-                    catch (InterruptedException e)
-                    {
-                        log.info("We've been interrupted");
-                        return;
-                    }
-                    log.error("Stopped");
-                }, "sleeper");
-        t.start();
-        Thread.sleep(wait);
-        t.interrupt();
-        log.info("{} interrupted: {}", t.getName(), t.isInterrupted());
     }
 
     private void worker(long allow) throws InterruptedException
