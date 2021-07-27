@@ -22,5 +22,6 @@ public final class Main
         new SpinnerApp().main(2_000);
         new WaitingApp().main(100, 500, 10);
         new CounterApp().main(100);
+        // new DeadlockApp().main();
     }
 }
