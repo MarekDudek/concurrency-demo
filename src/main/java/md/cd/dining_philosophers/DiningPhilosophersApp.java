@@ -31,8 +31,13 @@ public class DiningPhilosophersApp
                             right(forks.get((i + 1) % count)).
                             build()
             );
-        final List<Thread> threads = philosophers.stream().map(
-                philosopher -> new Thread(philosopher, philosopher.name)
+        final List<BlockingDiningPhilosopher> runnables = philosophers.stream().map(
+                philosopher -> BlockingDiningPhilosopher.builder().
+                        philosopher(philosopher).
+                        build()
+        ).collect(toList());
+        final List<Thread> threads = runnables.stream().map(
+                runnable -> new Thread(runnable, runnable.philosopher.name)
         ).collect(toList());
         for (final Thread thread : threads)
             thread.start();
