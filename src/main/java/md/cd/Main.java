@@ -26,6 +26,6 @@ public final class Main
         new CounterApp().main(100);
         // new DeadlockApp().main();
         new GuardedBlocksApp().main(1_000);
-        new DiningPhilosophersApp().main();
+        new DiningPhilosophersApp().main(3);
     }
 }

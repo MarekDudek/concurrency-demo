@@ -8,4 +8,7 @@
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
+    <logger name="md.cd.dining_philosophers" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 </configuration>

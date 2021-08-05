@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @ToString
 @Slf4j
-public final class BlockingDiningPhilosopher implements Runnable
+public final class BlockingPhilosopher implements Runnable
 {
     @NonNull
     public final Philosopher philosopher;
@@ -19,14 +19,14 @@ public final class BlockingDiningPhilosopher implements Runnable
         log.info("I'm between {} and {}", philosopher.left, philosopher.right);
         while (true)
         {
-            log.info("Waiting for left {}", philosopher.left);
+            log.trace("Waiting for left {}", philosopher.left);
             synchronized (philosopher.left)
             {
-                log.info("I picked up left {}", philosopher.left);
-                log.info("Waiting for right {}", philosopher.right);
+                log.trace("I picked up left {}", philosopher.left);
+                log.trace("Waiting for right {}", philosopher.right);
                 synchronized (philosopher.right)
                 {
-                    log.info("I picked up right {}", philosopher.right);
+                    log.trace("I picked up right {}", philosopher.right);
                     try
                     {
                         Thread.sleep(0, 1);
@@ -38,9 +38,9 @@ public final class BlockingDiningPhilosopher implements Runnable
                         return;
                     }
                 }
-                log.info("I put down right {}", philosopher.right);
+                log.trace("I put down right {}", philosopher.right);
             }
-            log.info("I put down left {}", philosopher.left);
+            log.trace("I put down left {}", philosopher.left);
         }
     }
 }
