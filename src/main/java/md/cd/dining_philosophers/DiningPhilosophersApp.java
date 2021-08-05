@@ -16,11 +16,21 @@ public class DiningPhilosophersApp
     {
         final int count = 5;
         final List<Fork> forks = newArrayListWithCapacity(count);
-        for (int i = 0; i < 5; i++)
-            forks.add(new Fork("fork-" + i));
+        for (int i = 0; i < count; i++)
+            forks.add(
+                    Fork.builder().
+                            name("fork-" + i).
+                            build()
+            );
         final List<Philosopher> philosophers = newArrayListWithCapacity(count);
         for (int i = 0; i < count; i++)
-            philosophers.add(new Philosopher("philosopher-" + i, forks.get(i), forks.get((i + 1) % count)));
+            philosophers.add(
+                    Philosopher.builder().
+                            name("philosopher-" + i).
+                            left(forks.get(i)).
+                            right(forks.get((i + 1) % count)).
+                            build()
+            );
         final List<Thread> threads = philosophers.stream().map(
                 philosopher -> new Thread(philosopher, philosopher.name)
         ).collect(toList());

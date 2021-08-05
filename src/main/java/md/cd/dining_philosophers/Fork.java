@@ -1,15 +1,13 @@
 package md.cd.dining_philosophers;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
+@Builder
 @ToString
 @EqualsAndHashCode
-@Slf4j
 public final class Fork
 {
     @NonNull
