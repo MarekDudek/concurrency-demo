@@ -1,6 +1,7 @@
 package md.cd;
 
 import lombok.extern.slf4j.Slf4j;
+import md.cd.guards.GuardedBlocksApp;
 import md.cd.hello.HelloApp;
 import md.cd.interference.CounterApp;
 import md.cd.interrupts.SleeperApp;
@@ -23,5 +24,6 @@ public final class Main
         new WaitingApp().main(100, 500, 10);
         new CounterApp().main(100);
         // new DeadlockApp().main();
+        new GuardedBlocksApp().main(1_000);
     }
 }
