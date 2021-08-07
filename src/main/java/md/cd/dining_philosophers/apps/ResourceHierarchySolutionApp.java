@@ -1,26 +1,28 @@
-package md.cd.dining_philosophers;
+package md.cd.dining_philosophers.apps;
 
 import lombok.extern.slf4j.Slf4j;
+import md.cd.dining_philosophers.resources.Philosopher;
+import md.cd.dining_philosophers.runnables.ResourceHierarchyPhilosopher;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayListWithCapacity;
 import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofSeconds;
 import static java.util.stream.Collectors.toList;
+import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.createPhilosophersWithForks;
 
 @Slf4j
-public class DiningPhilosophersApp
+public final class ResourceHierarchySolutionApp
 {
     public static void main(String[] args) throws InterruptedException
     {
         final int seconds = parseInt(args[0]);
-        new DiningPhilosophersApp().main(seconds);
+        new ResourceHierarchySolutionApp().main(seconds);
     }
 
     public void main(final int seconds) throws InterruptedException
     {
-        final List<Philosopher> philosophers = createDiningRoom();
+        final List<Philosopher> philosophers = createPhilosophersWithForks(5);
         final List<ResourceHierarchyPhilosopher> runnables = philosophers.stream().map(
                 philosopher -> ResourceHierarchyPhilosopher.builder().
                         philosopher(philosopher).
@@ -42,27 +44,5 @@ public class DiningPhilosophersApp
 
         for (final Runnable runnable : runnables)
             log.info("{}", runnable);
-    }
-
-    private static List<Philosopher> createDiningRoom()
-    {
-        final int count = 5;
-        final List<Fork> forks = newArrayListWithCapacity(count);
-        for (int i = 0; i < count; i++)
-            forks.add(
-                    Fork.builder().
-                            number(i).
-                            build()
-            );
-        final List<Philosopher> philosophers = newArrayListWithCapacity(count);
-        for (int i = 0; i < count; i++)
-            philosophers.add(
-                    Philosopher.builder().
-                            name("philosopher-" + i).
-                            left(forks.get(i)).
-                            right(forks.get((i + 1) % count)).
-                            build()
-            );
-        return philosophers;
     }
 }

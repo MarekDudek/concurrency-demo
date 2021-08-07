@@ -1,9 +1,11 @@
-package md.cd.dining_philosophers;
+package md.cd.dining_philosophers.runnables;
 
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import md.cd.dining_philosophers.resources.Fork;
+import md.cd.dining_philosophers.resources.Philosopher;
 
 @Builder
 @ToString
@@ -40,12 +42,13 @@ public final class ResourceHierarchyPhilosopher implements Runnable
                     {
                         log.info("I was interrupted, quitting");
                         Thread.currentThread().interrupt();
-                        return;
+                        break;
                     }
                 }
                 log.trace("I put down upper {}", upper);
             }
             log.trace("I put down lower {}", lower);
         }
+        log.info("Finished");
     }
 }

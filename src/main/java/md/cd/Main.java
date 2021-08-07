@@ -1,7 +1,7 @@
 package md.cd;
 
 import lombok.extern.slf4j.Slf4j;
-import md.cd.dining_philosophers.DiningPhilosophersApp;
+import md.cd.dining_philosophers.apps.ResourceHierarchySolutionApp;
 import md.cd.guards.GuardedBlocksApp;
 import md.cd.hello.HelloApp;
 import md.cd.interference.CounterApp;
@@ -26,6 +26,6 @@ public final class Main
         new CounterApp().main(100);
         // new DeadlockApp().main();
         new GuardedBlocksApp().main(1_000);
-        new DiningPhilosophersApp().main(3);
+        new ResourceHierarchySolutionApp().main(3);
     }
 }
