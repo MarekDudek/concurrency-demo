@@ -15,7 +15,7 @@ public final class ArbitratorSolution implements Runnable
     @NonNull
     public final Philosopher philosopher;
     @NonNull
-    private final Waiter waiter;
+    public final Waiter waiter;
 
     private long eaten;
 

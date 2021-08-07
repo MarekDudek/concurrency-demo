@@ -2,6 +2,7 @@ package md.cd;
 
 import lombok.extern.slf4j.Slf4j;
 import md.cd.dining_philosophers.apps.ArbitratorSolutionApp;
+import md.cd.dining_philosophers.apps.LimitedNumberOfDinersSolutionApp;
 import md.cd.dining_philosophers.apps.ResourceHierarchySolutionApp;
 import md.cd.guards.GuardedBlocksApp;
 import md.cd.hello.HelloApp;
@@ -29,5 +30,6 @@ public final class Main
         new GuardedBlocksApp().main(1_000);
         new ResourceHierarchySolutionApp().main(3);
         new ArbitratorSolutionApp().main(3);
+        new LimitedNumberOfDinersSolutionApp().main(3);
     }
 }

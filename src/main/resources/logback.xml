@@ -14,4 +14,7 @@
     <logger name="md.cd.dining_philosophers.runnables.ArbitratorSolution" level="trace" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
+    <logger name="md.cd.dining_philosophers.runnables.LimitedNumberOfDinersSolution" level="trace" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 </configuration>
