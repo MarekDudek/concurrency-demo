@@ -8,7 +8,10 @@
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
-    <logger name="md.cd.dining_philosophers" level="debug" additivity="false">
+    <logger name="md.cd.dining_philosophers.runnables.ResourceHierarchySolution" level="trace" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="md.cd.dining_philosophers.runnables.ArbitratorSolution" level="trace" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 </configuration>

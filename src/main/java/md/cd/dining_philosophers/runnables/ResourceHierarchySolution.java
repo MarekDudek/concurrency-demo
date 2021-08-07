@@ -10,10 +10,11 @@ import md.cd.dining_philosophers.resources.Philosopher;
 @Builder
 @ToString
 @Slf4j
-public final class ResourceHierarchyPhilosopher implements Runnable
+public final class ResourceHierarchySolution implements Runnable
 {
     @NonNull
     public final Philosopher philosopher;
+
     private long eaten;
 
     @Override

@@ -2,7 +2,7 @@ package md.cd.dining_philosophers.apps;
 
 import lombok.extern.slf4j.Slf4j;
 import md.cd.dining_philosophers.resources.Philosopher;
-import md.cd.dining_philosophers.runnables.ResourceHierarchyPhilosopher;
+import md.cd.dining_philosophers.runnables.ResourceHierarchySolution;
 
 import java.util.List;
 
@@ -23,8 +23,8 @@ public final class ResourceHierarchySolutionApp
     public void main(final int seconds) throws InterruptedException
     {
         final List<Philosopher> philosophers = createPhilosophersWithForks(5);
-        final List<ResourceHierarchyPhilosopher> runnables = philosophers.stream().map(
-                philosopher -> ResourceHierarchyPhilosopher.builder().
+        final List<ResourceHierarchySolution> runnables = philosophers.stream().map(
+                philosopher -> ResourceHierarchySolution.builder().
                         philosopher(philosopher).
                         build()
         ).collect(toList());

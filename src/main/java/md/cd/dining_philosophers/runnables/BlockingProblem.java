@@ -9,10 +9,11 @@ import md.cd.dining_philosophers.resources.Philosopher;
 @Builder
 @ToString
 @Slf4j
-public final class BlockingPhilosopher implements Runnable
+public final class BlockingProblem implements Runnable
 {
     @NonNull
     public final Philosopher philosopher;
+
     private long eaten;
 
     @Override

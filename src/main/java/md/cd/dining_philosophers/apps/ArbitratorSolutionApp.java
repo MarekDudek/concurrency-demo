@@ -2,7 +2,8 @@ package md.cd.dining_philosophers.apps;
 
 import lombok.extern.slf4j.Slf4j;
 import md.cd.dining_philosophers.resources.Philosopher;
-import md.cd.dining_philosophers.runnables.BlockingProblem;
+import md.cd.dining_philosophers.resources.Waiter;
+import md.cd.dining_philosophers.runnables.ArbitratorSolution;
 
 import java.util.List;
 
@@ -12,20 +13,22 @@ import static java.util.stream.Collectors.toList;
 import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.createPhilosophersWithForks;
 
 @Slf4j
-public final class BlockingDemoApp
+public final class ArbitratorSolutionApp
 {
     public static void main(String[] args) throws InterruptedException
     {
         final int seconds = parseInt(args[0]);
-        new BlockingDemoApp().main(seconds);
+        new ArbitratorSolutionApp().main(seconds);
     }
 
     public void main(final int seconds) throws InterruptedException
     {
         final List<Philosopher> philosophers = createPhilosophersWithForks(5);
-        final List<BlockingProblem> runnables = philosophers.stream().map(
-                philosopher -> BlockingProblem.builder().
+        final Waiter waiter = new Waiter();
+        final List<ArbitratorSolution> runnables = philosophers.stream().map(
+                philosopher -> ArbitratorSolution.builder().
                         philosopher(philosopher).
+                        waiter(waiter).
                         build()
         ).collect(toList());
         final List<Thread> threads = runnables.stream().map(
