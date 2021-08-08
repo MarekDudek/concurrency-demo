@@ -22,21 +22,14 @@ public final class ArbitratorSolution implements Runnable
     @Override
     public void run()
     {
-        log.trace("I'm between {} and {}", philosopher.left, philosopher.right);
         while (true)
         {
-            log.trace("Waiting for permission from waiter");
             synchronized (waiter)
             {
-                log.trace("Got permission from waiter");
-                log.trace("Waiting for left {}", philosopher.left);
                 synchronized (philosopher.left)
                 {
-                    log.trace("I picked up left {}", philosopher.left);
-                    log.trace("Waiting for right {}", philosopher.right);
                     synchronized (philosopher.right)
                     {
-                        log.trace("I picked up right {}", philosopher.right);
                         try
                         {
                             Thread.sleep(0, 1);
@@ -44,17 +37,12 @@ public final class ArbitratorSolution implements Runnable
                         }
                         catch (InterruptedException e)
                         {
-                            log.trace("I was interrupted, quitting");
                             Thread.currentThread().interrupt();
                             break;
                         }
                     }
-                    log.trace("I put down right {}", philosopher.right);
                 }
-                log.trace("I put down left {}", philosopher.left);
             }
-            log.trace("Finished");
         }
-        log.trace("Disengaged from waiter");
     }
 }

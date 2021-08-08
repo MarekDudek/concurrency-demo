@@ -22,7 +22,10 @@ public final class ResourceHierarchySolutionApp
     {
         final int seconds = parseInt(args[0]);
         final Duration duration = ofSeconds(seconds);
-        new ResourceHierarchySolutionApp().main(duration, 5);
+        final Map<Philosopher, Long> results = new ResourceHierarchySolutionApp().main(duration, 5);
+        results.forEach((key, value) ->
+                log.info("{} - {}", key.name, value)
+        );
     }
 
     public Map<Philosopher, Long> main(final Duration duration, final int count) throws InterruptedException

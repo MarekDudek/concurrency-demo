@@ -23,29 +23,21 @@ public final class LimitedNumberOfDinersSolution implements Runnable
     @Override
     public void run()
     {
-        log.trace("I'm between {} and {}", philosopher.left, philosopher.right);
         while (true)
         {
             try
             {
-                log.trace("Acquiring {}", semaphore);
                 semaphore.acquire();
-                log.trace("Acquired {}", semaphore);
             }
             catch (InterruptedException e)
             {
-                log.trace("I was interrupted during acquiring: {}", e.getMessage());
                 Thread.currentThread().interrupt();
                 break;
             }
-            log.trace("Waiting for left {}", philosopher.left);
             synchronized (philosopher.left)
             {
-                log.trace("I picked up left {}", philosopher.left);
-                log.trace("Waiting for right {}", philosopher.right);
                 synchronized (philosopher.right)
                 {
-                    log.trace("I picked up right {}", philosopher.right);
                     try
                     {
                         Thread.sleep(0, 1);
@@ -53,18 +45,12 @@ public final class LimitedNumberOfDinersSolution implements Runnable
                     }
                     catch (InterruptedException e)
                     {
-                        log.trace("I was interrupted during sleeping: {}", e.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
                 }
-                log.trace("I put down right {}", philosopher.right);
             }
-            log.trace("I put down left {}", philosopher.left);
-            log.trace("Releasing {}", semaphore);
             semaphore.release();
-            log.trace("Released {}", semaphore);
         }
-        log.trace("Finished");
     }
 }
