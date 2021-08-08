@@ -18,12 +18,12 @@ public final class LimitedNumberOfDinersSolution implements Runnable
     @NonNull
     public final Semaphore semaphore;
 
-    private long eaten;
+    public long worked;
 
     @Override
     public void run()
     {
-        log.info("I'm between {} and {}", philosopher.left, philosopher.right);
+        log.trace("I'm between {} and {}", philosopher.left, philosopher.right);
         while (true)
         {
             try
@@ -34,7 +34,7 @@ public final class LimitedNumberOfDinersSolution implements Runnable
             }
             catch (InterruptedException e)
             {
-                log.info("I was interrupted during acquiring: {}", e.getMessage());
+                log.trace("I was interrupted during acquiring: {}", e.getMessage());
                 Thread.currentThread().interrupt();
                 break;
             }
@@ -49,11 +49,11 @@ public final class LimitedNumberOfDinersSolution implements Runnable
                     try
                     {
                         Thread.sleep(0, 1);
-                        eaten++;
+                        worked++;
                     }
                     catch (InterruptedException e)
                     {
-                        log.info("I was interrupted during sleeping: {}", e.getMessage());
+                        log.trace("I was interrupted during sleeping: {}", e.getMessage());
                         Thread.currentThread().interrupt();
                         break;
                     }
@@ -65,6 +65,6 @@ public final class LimitedNumberOfDinersSolution implements Runnable
             semaphore.release();
             log.trace("Released {}", semaphore);
         }
-        log.info("Finished");
+        log.trace("Finished");
     }
 }

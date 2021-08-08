@@ -14,7 +14,7 @@ public final class BlockingProblem implements Runnable
     @NonNull
     public final Philosopher philosopher;
 
-    private long eaten;
+    public long worked;
 
     @Override
     public void run()
@@ -33,7 +33,7 @@ public final class BlockingProblem implements Runnable
                     try
                     {
                         Thread.sleep(0, 1);
-                        eaten++;
+                        worked++;
                     }
                     catch (InterruptedException e)
                     {

@@ -5,12 +5,16 @@ import md.cd.dining_philosophers.resources.Philosopher;
 import md.cd.dining_philosophers.resources.Waiter;
 import md.cd.dining_philosophers.runnables.ArbitratorSolution;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofSeconds;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.createPhilosophersWithForks;
+import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.run;
 
 @Slf4j
 public final class ArbitratorSolutionApp
@@ -18,34 +22,33 @@ public final class ArbitratorSolutionApp
     public static void main(String[] args) throws InterruptedException
     {
         final int seconds = parseInt(args[0]);
-        new ArbitratorSolutionApp().main(seconds);
+        final Duration duration = ofSeconds(seconds);
+        new ArbitratorSolutionApp().main(duration, 5);
     }
 
-    public void main(final int seconds) throws InterruptedException
+    public Map<Philosopher, Long> main(final Duration duration, final int count) throws InterruptedException
     {
-        final List<Philosopher> philosophers = createPhilosophersWithForks(5);
+        final List<Philosopher> philosophers = createPhilosophersWithForks(count);
         final Waiter waiter = new Waiter();
         final List<ArbitratorSolution> runnables = philosophers.stream().map(
-                philosopher -> ArbitratorSolution.builder().
-                        philosopher(philosopher).
-                        waiter(waiter).
-                        build()
+                philosopher ->
+                        ArbitratorSolution.builder().
+                                philosopher(philosopher).
+                                waiter(waiter).
+                                build()
         ).collect(toList());
+
         final List<Thread> threads = runnables.stream().map(
                 runnable -> new Thread(runnable, runnable.philosopher.name)
         ).collect(toList());
 
-        for (final Thread thread : threads)
-            thread.start();
+        run(threads, duration);
 
-        Thread.sleep(ofSeconds(seconds).toMillis());
-
-        for (final Thread thread : threads)
-            thread.interrupt();
-        for (final Thread thread : threads)
-            thread.join();
-
-        for (final Runnable runnable : runnables)
-            log.info("{}", runnable);
+        return runnables.stream().collect(
+                toMap(
+                        runnable -> runnable.philosopher,
+                        runnable -> runnable.worked
+                )
+        );
     }
 }

@@ -15,15 +15,15 @@ public final class ResourceHierarchySolution implements Runnable
     @NonNull
     public final Philosopher philosopher;
 
-    private long eaten;
+    public long worked;
 
     @Override
     public void run()
     {
-        log.info("I'm between {} and {}", philosopher.left, philosopher.right);
+        log.trace("I'm between {} and {}", philosopher.left, philosopher.right);
         final Fork lower = philosopher.left.number < philosopher.right.number ? philosopher.left : philosopher.right;
         final Fork upper = philosopher.left.number < philosopher.right.number ? philosopher.right : philosopher.left;
-        log.info("Lower is {}, upper is {}", lower, upper);
+        log.trace("Lower is {}, upper is {}", lower, upper);
         while (true)
         {
             log.trace("Waiting for lower {}", lower);
@@ -37,11 +37,11 @@ public final class ResourceHierarchySolution implements Runnable
                     try
                     {
                         Thread.sleep(0, 1);
-                        eaten++;
+                        worked++;
                     }
                     catch (InterruptedException e)
                     {
-                        log.info("I was interrupted, quitting");
+                        log.trace("I was interrupted, quitting");
                         Thread.currentThread().interrupt();
                         break;
                     }
@@ -50,6 +50,6 @@ public final class ResourceHierarchySolution implements Runnable
             }
             log.trace("I put down lower {}", lower);
         }
-        log.info("Finished");
+        log.trace("Finished");
     }
 }

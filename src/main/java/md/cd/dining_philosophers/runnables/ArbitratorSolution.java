@@ -17,12 +17,12 @@ public final class ArbitratorSolution implements Runnable
     @NonNull
     public final Waiter waiter;
 
-    private long eaten;
+    public long worked;
 
     @Override
     public void run()
     {
-        log.info("I'm between {} and {}", philosopher.left, philosopher.right);
+        log.trace("I'm between {} and {}", philosopher.left, philosopher.right);
         while (true)
         {
             log.trace("Waiting for permission from waiter");
@@ -40,11 +40,11 @@ public final class ArbitratorSolution implements Runnable
                         try
                         {
                             Thread.sleep(0, 1);
-                            eaten++;
+                            worked++;
                         }
                         catch (InterruptedException e)
                         {
-                            log.info("I was interrupted, quitting");
+                            log.trace("I was interrupted, quitting");
                             Thread.currentThread().interrupt();
                             break;
                         }

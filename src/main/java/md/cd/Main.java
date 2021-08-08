@@ -1,9 +1,7 @@
 package md.cd;
 
 import lombok.extern.slf4j.Slf4j;
-import md.cd.dining_philosophers.apps.ArbitratorSolutionApp;
-import md.cd.dining_philosophers.apps.LimitedNumberOfDinersSolutionApp;
-import md.cd.dining_philosophers.apps.ResourceHierarchySolutionApp;
+import md.cd.dining_philosophers.apps.ComparisionApp;
 import md.cd.guards.GuardedBlocksApp;
 import md.cd.hello.HelloApp;
 import md.cd.interference.CounterApp;
@@ -12,6 +10,8 @@ import md.cd.interrupts.SpinnerApp;
 import md.cd.interrupts.WaitingApp;
 import md.cd.interrupts.WorkerApp;
 import md.cd.sleep.SleepingApp;
+
+import static java.time.Duration.ofSeconds;
 
 @Slf4j
 public final class Main
@@ -28,8 +28,6 @@ public final class Main
         new CounterApp().main(100);
         // new DeadlockApp().main();
         new GuardedBlocksApp().main(1_000);
-        new ResourceHierarchySolutionApp().main(3);
-        new ArbitratorSolutionApp().main(3);
-        new LimitedNumberOfDinersSolutionApp().main(3);
+        new ComparisionApp().main(ofSeconds(3), 5);
     }
 }

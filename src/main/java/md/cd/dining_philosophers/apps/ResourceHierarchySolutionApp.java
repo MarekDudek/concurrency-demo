@@ -4,12 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import md.cd.dining_philosophers.resources.Philosopher;
 import md.cd.dining_philosophers.runnables.ResourceHierarchySolution;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofSeconds;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.createPhilosophersWithForks;
+import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.run;
 
 @Slf4j
 public final class ResourceHierarchySolutionApp
@@ -17,32 +21,32 @@ public final class ResourceHierarchySolutionApp
     public static void main(String[] args) throws InterruptedException
     {
         final int seconds = parseInt(args[0]);
-        new ResourceHierarchySolutionApp().main(seconds);
+        final Duration duration = ofSeconds(seconds);
+        new ResourceHierarchySolutionApp().main(duration, 5);
     }
 
-    public void main(final int seconds) throws InterruptedException
+    public Map<Philosopher, Long> main(final Duration duration, final int count) throws InterruptedException
     {
-        final List<Philosopher> philosophers = createPhilosophersWithForks(5);
+        final List<Philosopher> philosophers = createPhilosophersWithForks(count);
         final List<ResourceHierarchySolution> runnables = philosophers.stream().map(
-                philosopher -> ResourceHierarchySolution.builder().
-                        philosopher(philosopher).
-                        build()
+                philosopher ->
+                        ResourceHierarchySolution.builder().
+                                philosopher(philosopher).
+                                build()
         ).collect(toList());
+
         final List<Thread> threads = runnables.stream().map(
-                runnable -> new Thread(runnable, runnable.philosopher.name)
+                runnable ->
+                        new Thread(runnable, runnable.philosopher.name)
         ).collect(toList());
 
-        for (final Thread thread : threads)
-            thread.start();
+        run(threads, duration);
 
-        Thread.sleep(ofSeconds(seconds).toMillis());
-
-        for (final Thread thread : threads)
-            thread.interrupt();
-        for (final Thread thread : threads)
-            thread.join();
-
-        for (final Runnable runnable : runnables)
-            log.info("{}", runnable);
+        return runnables.stream().collect(
+                toMap(
+                        runnable -> runnable.philosopher,
+                        runnable -> runnable.worked
+                )
+        );
     }
 }

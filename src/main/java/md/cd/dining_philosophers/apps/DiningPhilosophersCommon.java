@@ -3,6 +3,7 @@ package md.cd.dining_philosophers.apps;
 import md.cd.dining_philosophers.resources.Fork;
 import md.cd.dining_philosophers.resources.Philosopher;
 
+import java.time.Duration;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -29,5 +30,16 @@ public enum DiningPhilosophersCommon
                         ).
                         build()
         ).collect(toList());
+    }
+
+    static void run(final List<Thread> threads, final Duration duration) throws InterruptedException
+    {
+        for (final Thread thread : threads)
+            thread.start();
+        Thread.sleep(duration.toMillis());
+        for (final Thread thread : threads)
+            thread.interrupt();
+        for (final Thread thread : threads)
+            thread.join();
     }
 }
