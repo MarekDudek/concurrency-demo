@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import md.cd.dining_philosophers.resources.Fork;
+import md.cd.dining_philosophers.resources.Chopstick;
 import md.cd.dining_philosophers.resources.Philosopher;
 
 @Builder
@@ -21,8 +21,8 @@ public final class ResourceHierarchySolution implements Runnable
     public void run()
     {
         log.trace("I'm between {} and {}", philosopher.left, philosopher.right);
-        final Fork lower = philosopher.left.number < philosopher.right.number ? philosopher.left : philosopher.right;
-        final Fork upper = philosopher.left.number < philosopher.right.number ? philosopher.right : philosopher.left;
+        final Chopstick lower = philosopher.left.number < philosopher.right.number ? philosopher.left : philosopher.right;
+        final Chopstick upper = philosopher.left.number < philosopher.right.number ? philosopher.right : philosopher.left;
         log.trace("Lower is {}, upper is {}", lower, upper);
         while (true)
         {

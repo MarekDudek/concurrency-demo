@@ -1,6 +1,6 @@
 package md.cd.dining_philosophers.apps;
 
-import md.cd.dining_philosophers.resources.Fork;
+import md.cd.dining_philosophers.resources.Chopstick;
 import md.cd.dining_philosophers.resources.Philosopher;
 
 import java.time.Duration;
@@ -13,20 +13,20 @@ public enum DiningPhilosophersCommon
 {
     ;
 
-    static List<Philosopher> createPhilosophersWithForks(final int count)
+    static List<Philosopher> createPhilosophersWithChopsticks(final int count)
     {
-        final List<Fork> fs =
+        final List<Chopstick> cs =
                 rangeClosed(0, count).mapToObj(
-                        Fork::new
+                        Chopstick::new
                 ).collect(toList());
         return rangeClosed(0, count).mapToObj(i ->
                 Philosopher.builder().
                         name("philosopher-" + i).
                         left(
-                                fs.get(i)
+                                cs.get(i)
                         ).
                         right(
-                                fs.get((i + 1) % count)
+                                cs.get((i + 1) % count)
                         ).
                         build()
         ).collect(toList());

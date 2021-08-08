@@ -51,6 +51,7 @@ public final class ComparisionApp
                         p -> p.name
                 ).collect(toList());
         names.add(0, "solution\\philosopher");
+        names.add("total");
         final String[] headers = names.toArray(new String[]{});
 
         final String[][] data = results.entrySet().stream().map(
@@ -59,6 +60,8 @@ public final class ComparisionApp
                     final Map<Philosopher, Long> map = entry.getValue();
                     final List<String> works = map.values().stream().map(work -> Long.toString(work)).collect(toList());
                     works.add(0, solution);
+                    final long total = map.values().stream().mapToLong(Long::longValue).sum();
+                    works.add(Long.toString(total));
                     return works.toArray(new String[]{});
                 }).collect(toList()).toArray(new String[][]{});
 

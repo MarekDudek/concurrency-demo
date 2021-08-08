@@ -11,7 +11,7 @@ public class Philosopher
     @NonNull
     public String name;
     @NonNull
-    public Fork left;
+    public Chopstick left;
     @NonNull
-    public Fork right;
+    public Chopstick right;
 }

@@ -13,7 +13,7 @@ import static java.lang.Integer.parseInt;
 import static java.time.Duration.ofSeconds;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.createPhilosophersWithForks;
+import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.createPhilosophersWithChopsticks;
 import static md.cd.dining_philosophers.apps.DiningPhilosophersCommon.run;
 
 @Slf4j
@@ -28,7 +28,7 @@ public final class ArbitratorSolutionApp
 
     public Map<Philosopher, Long> main(final Duration duration, final int count) throws InterruptedException
     {
-        final List<Philosopher> philosophers = createPhilosophersWithForks(count);
+        final List<Philosopher> philosophers = createPhilosophersWithChopsticks(count);
         final Waiter waiter = new Waiter();
         final List<ArbitratorSolution> runnables = philosophers.stream().map(
                 philosopher ->

@@ -4,7 +4,7 @@ import lombok.Value;
 
 
 @Value
-public class Fork
+public class Chopstick
 {
     public int number;
 }
