@@ -20,4 +20,7 @@
     <logger name="md.cd.cigarette_smokers.runnables" level="trace" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
+    <logger name="md.cd.dining_philosophers_2.apps" level="trace" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
 </configuration>
