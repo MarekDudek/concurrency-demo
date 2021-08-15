@@ -30,8 +30,8 @@ public final class BlockingWaitNotifyDemoApp
                 rangeClosed(1, count).mapToObj(i ->
                         Philosopher2.builder().
                                 name("philosopher-" + i).
-                                leftChopstick(chopsticks.get((i - 1) % count)).
-                                rightChopstick(chopsticks.get(1 % count)).
+                                left(chopsticks.get((i - 1) % count)).
+                                right(chopsticks.get(1 % count)).
                                 leftGuard(new Guard(i)).
                                 rightGuard(new Guard(i + count)).
                                 build()
@@ -56,6 +56,6 @@ public final class BlockingWaitNotifyDemoApp
         threads.forEach(Thread::interrupt);
         for (final Thread t : threads)
             t.join();
-        runnables.forEach(r -> log.trace("{}", r.worked));
+        runnables.forEach(r -> log.trace("{} - {}", r.philosopher.name, r.worked));
     }
 }

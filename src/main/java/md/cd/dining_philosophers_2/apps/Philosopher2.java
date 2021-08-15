@@ -11,11 +11,13 @@ class Philosopher2
     @NonNull
     public final String name;
     @NonNull
-    public final Chopstick2 leftChopstick;
+    public final Chopstick2 left;
     @NonNull
-    public final Chopstick2 rightChopstick;
+    public final Chopstick2 right;
     @NonNull
+    @Deprecated
     public final Guard leftGuard;
     @NonNull
+    @Deprecated
     public final Guard rightGuard;
 }

@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import static org.apache.commons.lang3.BooleanUtils.isFalse;
+
 @Builder
 @Slf4j
 class BlockingProblem2 implements Runnable
@@ -18,61 +20,83 @@ class BlockingProblem2 implements Runnable
     public void run()
     {
         log.trace("Started");
+        main:
         while (true)
         {
-
-            log.trace("Waiting for right {}", philosopher.rightGuard);
-            synchronized (philosopher.rightGuard)
+            if (philosopher.left.free)
             {
-                log.trace("Got right {}, waiting for right {}", philosopher.rightGuard, philosopher.rightChopstick);
-                while (!philosopher.rightChopstick.free)
-                    try
-                    {
-                        philosopher.rightGuard.wait();
-                    }
-                    catch (InterruptedException e)
-                    {
-                        log.trace("Interrupted waiting for right {}", philosopher.rightGuard);
-                        return;
-                    }
-                log.trace("Taking right {}", philosopher.rightChopstick);
-                philosopher.rightChopstick.free = false;
-                log.trace("Waiting for left {}", philosopher.leftGuard);
-                synchronized (philosopher.leftGuard)
+                log.trace("Taking uncontested left {}", philosopher.left);
+                philosopher.left.free = false;
+            }
+            else
+            {
+                log.trace("Synchronizing on left {}", philosopher.left);
+                synchronized (philosopher.left)
                 {
-                    log.trace("Got left {}, waiting for left {}", philosopher.leftGuard, philosopher.leftChopstick);
-                    while (!philosopher.leftChopstick.free)
+                    while (isFalse(philosopher.left.free))
+                    {
                         try
                         {
-                            philosopher.leftGuard.wait();
+                            log.trace("Waiting for left {}", philosopher.left);
+                            philosopher.left.wait();
                         }
                         catch (InterruptedException e)
                         {
-                            log.trace("Interrupted waiting for left {}", philosopher.leftGuard);
-                            return;
+                            Thread.currentThread().interrupt();
+                            log.trace("Interrupted waiting for left {}", philosopher.left);
+                            break main;
                         }
-                    log.trace("Taking left {}", philosopher.leftChopstick);
-                    philosopher.leftChopstick.free = false;
-                    try
-                    {
-                        log.trace("About to work for a while");
-                        worked++;
-                        Thread.sleep(0, 1);
                     }
-                    catch (InterruptedException e)
-                    {
-                        break;
-                    }
-                    log.trace("Dropping left {}", philosopher.leftChopstick);
-                    philosopher.leftChopstick.free = true;
-                    philosopher.leftGuard.notifyAll();
+                    log.trace("Taking contested left {}", philosopher.left);
+                    philosopher.left.free = false;
                 }
-                log.trace("Dropping right {}", philosopher.rightChopstick);
-                philosopher.rightChopstick.free = true;
-                philosopher.rightGuard.notifyAll();
             }
+            if (philosopher.right.free)
+            {
+                log.trace("Taking uncontested right {}", philosopher.right);
+                philosopher.right.free = false;
+            }
+            else
+            {
+                log.trace("Synchronizing on right {}", philosopher.right);
+                synchronized (philosopher.right)
+                {
+                    while (isFalse(philosopher.right.free))
+                    {
+                        try
+                        {
+                            log.trace("Waiting for right {}", philosopher.right);
+                            philosopher.right.wait();
+                        }
+                        catch (InterruptedException e)
+                        {
+                            Thread.currentThread().interrupt();
+                            log.trace("Interrupted waiting for right {}", philosopher.right);
+                            break main;
+                        }
+                    }
+                    log.trace("Taking contested right {}", philosopher.right);
+                    philosopher.right.free = false;
+                }
+            }
+            try
+            {
+                log.trace("Working");
+                Thread.sleep(0, 1);
+                log.trace("Worked");
+                worked++;
+            }
+            catch (InterruptedException e)
+            {
+                Thread.currentThread().interrupt();
+                log.trace("Interrupted working");
+                break;
+            }
+            log.trace("Dropping right {}", philosopher.right);
+            philosopher.right.free = true;
+            log.trace("Dropping left {}", philosopher.left);
+            philosopher.left.free = true;
         }
-
         log.trace("Finished");
     }
 }
