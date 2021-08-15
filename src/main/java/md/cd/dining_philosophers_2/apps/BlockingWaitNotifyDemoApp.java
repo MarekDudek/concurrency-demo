@@ -20,20 +20,12 @@ public final class BlockingWaitNotifyDemoApp
                                 free(true).
                                 build()
                 ).collect(toList());
-        final List<Guard> guards =
-                rangeClosed(1, count).mapToObj(i ->
-                        Guard.builder().
-                                number(i).
-                                build()
-                ).collect(toList());
         final List<Philosopher2> ps =
                 rangeClosed(1, count).mapToObj(i ->
                         Philosopher2.builder().
                                 name("philosopher-" + i).
                                 left(chopsticks.get((i - 1) % count)).
-                                right(chopsticks.get(1 % count)).
-                                leftGuard(new Guard(i)).
-                                rightGuard(new Guard(i + count)).
+                                right(chopsticks.get(i % count)).
                                 build()
                 ).collect(toList());
         ps.forEach(p -> log.info("{}", p));
@@ -56,6 +48,6 @@ public final class BlockingWaitNotifyDemoApp
         threads.forEach(Thread::interrupt);
         for (final Thread t : threads)
             t.join();
-        runnables.forEach(r -> log.trace("{} - {}", r.philosopher.name, r.worked));
+        runnables.forEach(r -> log.info("{} - {}", r.worked, r.philosopher));
     }
 }

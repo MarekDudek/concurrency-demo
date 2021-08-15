@@ -3,10 +3,11 @@ package md.cd.dining_philosophers_2.apps;
 import lombok.Builder;
 import lombok.ToString;
 
+
 @Builder
 @ToString
-class Chopstick2
+final class Chopstick2
 {
-    public int number;
-    public boolean free;
+    public final int number;
+    public volatile boolean free;
 }

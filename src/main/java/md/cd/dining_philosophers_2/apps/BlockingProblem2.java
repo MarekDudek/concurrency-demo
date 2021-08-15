@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-import static org.apache.commons.lang3.BooleanUtils.isFalse;
-
 @Builder
 @Slf4j
 class BlockingProblem2 implements Runnable
@@ -33,7 +31,7 @@ class BlockingProblem2 implements Runnable
                 log.trace("Synchronizing on left {}", philosopher.left);
                 synchronized (philosopher.left)
                 {
-                    while (isFalse(philosopher.left.free))
+                    while (!philosopher.left.free)
                     {
                         try
                         {
@@ -61,8 +59,7 @@ class BlockingProblem2 implements Runnable
                 log.trace("Synchronizing on right {}", philosopher.right);
                 synchronized (philosopher.right)
                 {
-                    while (isFalse(philosopher.right.free))
-                    {
+                    while (!philosopher.right.free)
                         try
                         {
                             log.trace("Waiting for right {}", philosopher.right);
@@ -74,7 +71,6 @@ class BlockingProblem2 implements Runnable
                             log.trace("Interrupted waiting for right {}", philosopher.right);
                             break main;
                         }
-                    }
                     log.trace("Taking contested right {}", philosopher.right);
                     philosopher.right.free = false;
                 }
@@ -96,6 +92,16 @@ class BlockingProblem2 implements Runnable
             philosopher.right.free = true;
             log.trace("Dropping left {}", philosopher.left);
             philosopher.left.free = true;
+
+            synchronized (philosopher.right)
+            {
+                philosopher.right.notify();
+            }
+
+            synchronized (philosopher.left)
+            {
+                philosopher.left.notify();
+            }
         }
         log.trace("Finished");
     }
