@@ -32,8 +32,8 @@ public final class BlockingWaitNotifyDemoApp
                                 name("philosopher-" + i).
                                 leftChopstick(chopsticks.get((i - 1) % count)).
                                 rightChopstick(chopsticks.get(1 % count)).
-                                leftGuard(guards.get((i - 1) % count)).
-                                rightGuard(guards.get(i % count)).
+                                leftGuard(new Guard(i)).
+                                rightGuard(new Guard(i + count)).
                                 build()
                 ).collect(toList());
         ps.forEach(p -> log.info("{}", p));
